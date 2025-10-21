@@ -1,49 +1,182 @@
+<!-- =========================================================
+     Project: Interactive Rating Component
+     Challenge: Frontend Mentor
+     Description:
+       Accessible, semantic, desktop-first HTML structure
+       that contains both the rating state and thank-you state.
+     Author: Benjamin
+     ========================================================= -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <!-- ==============================
+       🔧 Document Metadata
+       ============================== -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description"
+    content="Interactive rating component — choose 1 to 5 and submit feedback. Accessible, semantic, desktop-first HTML structure ready for CSS and JS." />
+  <title>Interactive rating component — Frontend Mentor</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Interactive rating component</title>
+  <!-- ==============================
+       🧩 Favicons / Assets
+       ============================== -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <!-- ==============================
+       ⚙️ Script (Modern defer loading)
+       ============================== -->
+  <script src="./script.js" defer></script>
+
+  <!-- ==============================
+       ♿ Utility: Visually Hidden Class
+       (Screen reader only)
+       ============================== -->
   <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
+    .visually-hidden {
+      position: absolute !important;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+      clip: rect(1px, 1px, 1px, 1px);
+      white-space: nowrap;
+      border: 0;
+      padding: 0;
+      margin: -1px;
+    }
   </style>
+
+  <!-- ==============================
+       🎨 Stylesheet
+       ============================== -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
+
 <body>
+  <!-- =========================================================
+       MAIN CONTENT AREA
+       ========================================================= -->
+  <main class="page" id="main" tabindex="-1">
+    <!-- =====================================================
+         COMPONENT: Rating Card (Initial State)
+         Description:
+           Displays star icon, rating buttons (1–5),
+           and a submit button.
+         ===================================================== -->
+    <section class="card card--rating" aria-labelledby="rating-title">
+      <header class="card__header">
+        <!-- Decorative icon (no alt for accessibility) -->
+        <div class="card__icon" aria-hidden="true">
+          <img src="./images/icon-star.svg" alt="" width="40" height="40" />
+        </div>
+      </header>
 
-  <!-- Rating state start -->
+      <div class="card__body">
+        <h1 id="rating-title" class="card__title">How did we do?</h1>
+        <p class="card__description">
+          Please let us know how we did with your support request.
+          All feedback is appreciated to help us improve our offering!
+        </p>
 
-  How did we do?
+        <!-- Rating buttons (1–5) -->
+        <div class="card__rating-group" role="radiogroup" aria-labelledby="rating-title">
+          <button type="button" class="card__rating-btn" data-rating-value="1" aria-label="Rate 1 out of 5"
+            aria-pressed="false">
+            <span class="card__rating-label">1</span>
+          </button>
+          <button type="button" class="card__rating-btn" data-rating-value="2" aria-label="Rate 2 out of 5"
+            aria-pressed="false">
+            <span class="card__rating-label">2</span>
+          </button>
+          <button type="button" class="card__rating-btn" data-rating-value="3" aria-label="Rate 3 out of 5"
+            aria-pressed="false">
+            <span class="card__rating-label">3</span>
+          </button>
+          <button type="button" class="card__rating-btn" data-rating-value="4" aria-label="Rate 4 out of 5"
+            aria-pressed="false">
+            <span class="card__rating-label">4</span>
+          </button>
+          <button type="button" class="card__rating-btn" data-rating-value="5" aria-label="Rate 5 out of 5"
+            aria-pressed="false">
+            <span class="card__rating-label">5</span>
+          </button>
+        </div>
 
-  Please let us know how we did with your support request. All feedback is appreciated 
-  to help us improve our offering!
+        <!-- Submit form -->
+        <div class="card__actions">
+          <form class="card__form" method="post" action="#" novalidate>
+            <button type="submit" class="card__submit" aria-label="Submit your rating" data-js="submit-rating">
+              Submit
+            </button>
+            <noscript>
+              <p class="card__noscript">
+                JavaScript is disabled — use the form submit to send your rating.
+              </p>
+            </noscript>
+          </form>
+        </div>
+      </div>
 
-  1 2 3 4 5
+      <footer class="card__footer">
+        <p class="card__attribution attribution">
+          Challenge by
+          <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noopener noreferrer">
+            Frontend Mentor
+          </a>.
+          Coded by <a href="#" rel="noopener noreferrer">Your Name Here</a>.
+        </p>
+      </footer>
+    </section>
 
-  Submit
+    <!-- =====================================================
+         COMPONENT: Thank-You Card (Hidden by default)
+         Description:
+           Displays thank-you illustration and selected rating
+           once user submits.
+         ===================================================== -->
+    <section class="card card--thankyou" hidden aria-labelledby="thankyou-title" aria-live="polite"
+      data-js="thankyou-state">
+      <div class="card__body">
+        <div class="card__illustration" aria-hidden="true">
+          <img src="./images/illustration-thank-you.svg" alt="" width="162" height="108" />
+        </div>
 
-  <!-- Rating state end -->
+        <p class="card__selected" data-js="selected-rating" aria-atomic="true">
+          You selected <span data-js="selected-value">0</span> out of 5
+        </p>
 
-  <!-- Thank you state start -->
+        <h2 id="thankyou-title" class="card__title card__title--thankyou">Thank you!</h2>
+        <p class="card__description card__description--thankyou">
+          We appreciate you taking the time to give a rating.
+          If you ever need more support, don’t hesitate to get in touch!
+        </p>
+      </div>
 
-  You selected <!-- Add rating here --> out of 5
+      <footer class="card__footer">
+        <p class="card__attribution attribution">
+          Challenge by
+          <a href="https://www.frontendmentor.io?ref=challenge" target="_blank" rel="noopener noreferrer">
+            Frontend Mentor
+          </a>.
+          Coded by <a href="#" rel="noopener noreferrer">Your Name Here</a>.
+        </p>
+      </footer>
+    </section>
+  </main>
 
-  Thank you!
-
-  We appreciate you taking the time to give a rating. If you ever need more support, 
-  don’t hesitate to get in touch!
-
-  <!-- Thank you state end -->
-
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+  <!-- =========================================================
+       JS Notes
+       - Keep all scripts external and unobtrusive.
+       - Use data-js attributes as DOM hooks.
+       - Example behaviours:
+         • Toggle aria-pressed on rating buttons
+         • Store selected rating
+         • Prevent default form submit
+         • Show thank-you card / hide rating card
+         • Populate [data-js="selected-value"]
+       ========================================================= -->
 </body>
+
 </html>
