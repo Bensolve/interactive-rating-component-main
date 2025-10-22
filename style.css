@@ -37,6 +37,9 @@
     padding: 0;
 }
 
+/* Ensure hidden elements remain hidden, even if styled elsewhere */
+
+
 html {
     font-size: 100%;
     /* 16px base */
@@ -140,11 +143,7 @@ input {
     gap: clamp(0.75rem, 2vw, 1.25rem);
 }
 
-/* Ensure both states are visually similar in size to avoid jank on toggle */
-.card--rating,
-.card--thankyou {
-    /* no-op: share same card base */
-}
+
 
 /* Header icon container */
 .card__header {
@@ -303,6 +302,20 @@ input {
     place-items: center;
     text-align: center;
     padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+
+/* =========================
+   7B. Hidden state handling (Frontend Mentor–safe)
+   ========================= */
+
+/* Hide thank-you card when [hidden] attribute is present */
+.card--thankyou[hidden] {
+    display: none;
+}
+
+/* Hide rating card when [hidden] attribute is present */
+.card--rating[hidden] {
+    display: none;
 }
 
 .card__illustration img {
