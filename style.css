@@ -1,0 +1,404 @@
+/* ==========================================================================
+   Project: Interactive Rating Component
+   Author: Your Name
+   File: style.css
+   Description:
+     - Mobile-first, fluid-responsive CSS
+     - WCAG 2.2 AA (POUR principles) focused
+     - Uses clamp(), min(), max() for intrinsic scaling
+     - Built with Flexbox & Grid; minimal media queries for layout shifts
+     - Style guide: mobile 375px, desktop 1440px; Overpass (400,700)
+   References:
+     - desktop-design.jpg, mobile-design.jpg, active-states.jpg
+   ========================================================================== */
+
+/* ========== 1. Root variables & global reset ========== */
+:root {
+    --clr-orange-500: hsl(25, 97%, 53%);
+    --clr-white: hsl(0, 0%, 100%);
+    --clr-grey-500: hsl(217, 12%, 63%);
+    --clr-grey-900: hsl(213, 19%, 18%);
+    --clr-grey-950: hsl(216, 12%, 8%);
+
+    --radius: 1.5rem;
+    --radius-sm: 1rem;
+    --shadow-1: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+    --transition: 250ms ease;
+    --focus-outline: 3px solid #005fcc;
+    --focus-offset: 3px;
+}
+
+/* Box model & reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+    /* 16px base */
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Overpass', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-weight: 400;
+    color: var(--clr-white);
+    background-color: var(--clr-grey-950);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========== 2. Accessibility utilities ========== */
+
+/* Screen-reader only utility (keeps content for AT) */
+.sr-only,
+.visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition: 1ms;
+    }
+
+    * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* Honor high contrast mode where supported */
+@media (prefers-contrast: high) {
+    * {
+        outline-style: auto !important;
+    }
+}
+
+/* Focus styles (keyboard users) */
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-offset);
+    border-radius: 0.375rem;
+}
+
+/* Minimum hit area for motor accessibility */
+button,
+a,
+input {
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+/* ========== 3. Page & container layout (mobile-first) ========== */
+
+/* Centering container with fluid padding that keeps content centered on large screens */
+.page {
+    width: 100%;
+    padding-inline: max(1rem, (100% - 60rem) / 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Card: mobile-first fluid sizing */
+.card {
+    width: 100%;
+    max-width: 26rem;
+    /* design target */
+    margin-inline: auto;
+    padding: clamp(1.25rem, 5vw, 2.25rem);
+    background-color: var(--clr-grey-900);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-1);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+/* Ensure both states are visually similar in size to avoid jank on toggle */
+.card--rating,
+.card--thankyou {
+    /* no-op: share same card base */
+}
+
+/* Header icon container */
+.card__header {
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Icon sizing (decorative) */
+.card__icon img {
+    display: block;
+    width: clamp(2rem, 6vw, 2.5rem);
+    height: auto;
+}
+
+/* ========== 4. Typography (fluid with clamp) ========== */
+
+:root {
+    /* base fluid scale hints (optional tokens for reference) */
+    --type-scale-sm: clamp(0.875rem, 1vw + 0.2rem, 1rem);
+    /* ~14-16px */
+    --type-scale-md: clamp(1rem, 1.2vw + 0.4rem, 1.125rem);
+    /* ~16-18px */
+    --type-scale-lg: clamp(1.5rem, 2vw + 1rem, 2rem);
+    /* headings */
+}
+
+.card__title {
+    font-size: var(--type-scale-lg);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+    text-align: left;
+}
+
+.card__description {
+    font-size: var(--type-scale-sm);
+    color: var(--clr-grey-500);
+    margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+    max-width: 70ch;
+    /* cognitive accessibility: optimal line length */
+}
+
+/* Attribution small text */
+.attribution {
+    font-size: clamp(0.6875rem, 0.6vw + 0.4rem, 0.8125rem);
+    color: var(--clr-grey-500);
+    text-align: center;
+}
+
+/* ========== 5. Rating controls (Flexbox, motor accessibility) ========== */
+
+.card__rating-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 1rem);
+    flex-wrap: wrap;
+    margin-bottom: clamp(1rem, 3vw, 1.75rem);
+}
+
+/* Rating button: circular, large hit target, fluid size */
+.card__rating-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background-color: transparent;
+    color: var(--clr-grey-500);
+    border-radius: 50%;
+    width: clamp(2.5rem, 6vw, 3rem);
+    height: clamp(2.5rem, 6vw, 3rem);
+    display: inline-grid;
+    place-items: center;
+    font-size: clamp(0.875rem, 1vw, 1rem);
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), transform var(--transition);
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Hover & focus (paired – avoid hover-only) */
+.card__rating-btn:hover,
+.card__rating-btn:focus-visible {
+    background-color: var(--clr-orange-500);
+    color: var(--clr-white);
+    transform: translateY(-2px);
+    border-color: transparent;
+}
+
+/* Selected state indicated with aria-pressed attribute */
+.card__rating-btn[aria-pressed="true"] {
+    background-color: var(--clr-grey-500);
+    color: var(--clr-white);
+    transform: none;
+}
+
+/* Provide visible focus ring for keyboard users */
+.card__rating-btn:focus-visible {
+    box-shadow: 0 0 0 4px rgba(0, 95, 204, 0.12);
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-offset);
+}
+
+/* Ensure contrast: text inside button has adequate contrast against backgrounds */
+.card__rating-label {
+    display: inline-block;
+}
+
+/* ========== 6. Submit CTA (prominent & accessible) ========== */
+
+.card__actions {
+    width: 100%;
+}
+
+.card__form {
+    display: block;
+}
+
+.card__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: clamp(0.6rem, 1.2vw, 0.95rem);
+    font-weight: 700;
+    font-size: clamp(0.875rem, 1vw, 1rem);
+    color: var(--clr-white);
+    background-color: var(--clr-orange-500);
+    border: none;
+    border-radius: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+}
+
+/* Hover and focus */
+.card__submit:hover,
+.card__submit:focus-visible {
+    background-color: hsl(25, 100%, 61%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(37, 31, 28, 0.12);
+}
+
+/* Disabled state if needed (for JS to set) */
+.card__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    background-color: rgba(255, 165, 0, 0.6);
+}
+
+/* ========== 7. Thank-you state (centered using Grid) ========== */
+
+.card--thankyou {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+
+.card__illustration img {
+    width: clamp(6rem, 24vw, 10rem);
+    height: auto;
+    margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.card__selected {
+    display: inline-block;
+    background-color: var(--clr-grey-900);
+    color: var(--clr-orange-500);
+    border-radius: 2rem;
+    padding: 0.45rem 0.9rem;
+    font-size: clamp(0.75rem, 0.8vw + 0.2rem, 0.9rem);
+    margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+/* Thank-you heading */
+.card__title--thankyou {
+    font-size: clamp(1.25rem, 1.6vw + 0.8rem, 1.75rem);
+    margin-bottom: 0.25rem;
+}
+
+/* ========== 8. Cognitive accessibility helpers & spacing ========== */
+
+/* Predictable spacing for sections */
+section {
+    margin-bottom: 1.25rem;
+}
+
+/* Reduce distractions: secondary content visual de-emphasis */
+.secondary-content {
+    opacity: 0.95;
+}
+
+/* Maintain readable measures */
+.content,
+.card__description {
+    max-width: 70ch;
+}
+
+/* ========== 9. Large-screen adjustments (mobile-first -> desktop) ========== */
+
+/* Use a desktop media query only for layout shifts and larger paddings */
+@media (min-width: 48rem) {
+    .card {
+        padding: clamp(1.75rem, 3.5vw, 3rem);
+        gap: clamp(1rem, 1.5vw, 1.5rem);
+        max-width: 28.5rem;
+        /* slightly larger on desktop */
+    }
+
+    .card__header {
+        align-items: center;
+    }
+
+    .card__title {
+        text-align: left;
+    }
+
+    .card__rating-group {
+        gap: clamp(0.75rem, 1.2vw, 1.25rem);
+        justify-content: space-between;
+    }
+}
+
+/* Additional layout tweak for very large viewports to avoid overly wide content */
+@media (min-width: 90rem) {
+    .card {
+        max-width: min(32rem, 34rem);
+    }
+}
+
+/* ========== 10. Edge-case & utility rules ========== */
+
+/* Prevent images from causing overflow */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Prevent horizontal scroll due to long words */
+html,
+body {
+    overflow-x: hidden;
+}
+
+/* Utility: muted text */
+.text-muted {
+    color: var(--clr-grey-500);
+}
+
+/* Utility: center block */
+.u-center {
+    margin-inline: auto;
+    text-align: center;
+}
