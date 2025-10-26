@@ -20,6 +20,9 @@
     --clr-grey-900: hsl(213, 19%, 18%);
     --clr-grey-950: hsl(216, 12%, 8%);
 
+    /* === New tone for subtle UI backgrounds === */
+    --clr-grey-800: hsl(213, 19%, 23%);
+
     --radius: 1.5rem;
     --radius-sm: 1rem;
     --shadow-1: 0 1rem 2rem rgba(0, 0, 0, 0.15);
@@ -83,8 +86,8 @@ body {
     }
 
     * {
-        animation-duration: 0.001ms !important;
-        transition-duration: 0.001ms !important;
+        animation-duration: 0.001ms;
+        transition-duration: 0.001ms;
         animation-iteration-count: 1 !important;
     }
 }
@@ -151,10 +154,21 @@ input {
     align-items: flex-start;
 }
 
+.card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--clr-grey-800);
+    /* slightly lighter than card bg */
+    border-radius: 50%;
+    width: clamp(2.5rem, 4vw + 1rem, 3rem);
+    height: clamp(2.5rem, 4vw + 1rem, 3rem);
+}
+
 /* Icon sizing (decorative) */
 .card__icon img {
     display: block;
-    width: clamp(2rem, 6vw, 2.5rem);
+    width: clamp(1rem, 2vw + 0.2rem, 1.25rem);
     height: auto;
 }
 
@@ -182,7 +196,7 @@ input {
     font-size: var(--type-scale-sm);
     color: var(--clr-grey-500);
     margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
-    max-width: 70ch;
+    max-width: 50ch;
     /* cognitive accessibility: optimal line length */
 }
 
@@ -199,9 +213,11 @@ input {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: clamp(0.5rem, 2vw, 1rem);
-    flex-wrap: wrap;
-    margin-bottom: clamp(1rem, 3vw, 1.75rem);
+    /* gap: clamp(0.5rem, 1vw, 0.75rem); */
+    flex-wrap: nowrap;
+    /* keep all 5 on one line */
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+
 }
 
 /* Rating button: circular, large hit target, fluid size */
@@ -209,18 +225,27 @@ input {
     appearance: none;
     -webkit-appearance: none;
     border: none;
-    background-color: transparent;
-    color: var(--clr-grey-500);
     border-radius: 50%;
-    width: clamp(2.5rem, 6vw, 3rem);
-    height: clamp(2.5rem, 6vw, 3rem);
     display: inline-grid;
     place-items: center;
-    font-size: clamp(0.875rem, 1vw, 1rem);
     cursor: pointer;
-    transition: background-color var(--transition), color var(--transition), transform var(--transition);
-    background-color: transparent;
+
+    /* Intrinsic sizing */
+    width: clamp(2.5rem, 6vw, 3rem);
+    height: clamp(2.5rem, 6vw, 3rem);
+    font-size: clamp(0.875rem, 1vw, 1rem);
+
+    /* Colors */
+    background-color: var(--clr-grey-800);
+    /* ✅ defined in :root */
+    color: var(--clr-grey-500);
     border: 1px solid rgba(255, 255, 255, 0.04);
+
+    /* Motion */
+    transition:
+        background-color var(--transition),
+        color var(--transition),
+        transform var(--transition);
 }
 
 /* Hover & focus (paired – avoid hover-only) */
@@ -234,8 +259,8 @@ input {
 
 /* Selected state indicated with aria-pressed attribute */
 .card__rating-btn[aria-pressed="true"] {
-    background-color: var(--clr-grey-500);
-    color: var(--clr-white);
+    background-color: var(--clr-white);
+    color: var(--clr-grey-900);
     transform: none;
 }
 
@@ -269,12 +294,13 @@ input {
     padding: clamp(0.6rem, 1.2vw, 0.95rem);
     font-weight: 700;
     font-size: clamp(0.875rem, 1vw, 1rem);
-    color: var(--clr-white);
+    /* color: var(--clr-white); */
+
     background-color: var(--clr-orange-500);
     border: none;
     border-radius: 2rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.28em;
     cursor: pointer;
     transition: background-color var(--transition), transform var(--transition);
 }
@@ -282,7 +308,7 @@ input {
 /* Hover and focus */
 .card__submit:hover,
 .card__submit:focus-visible {
-    background-color: hsl(25, 100%, 61%);
+    background-color: var(--clr-white);
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(37, 31, 28, 0.12);
 }
@@ -316,6 +342,12 @@ input {
 /* Hide rating card when [hidden] attribute is present */
 .card--rating[hidden] {
     display: none;
+}
+
+.card__illustration,
+.card__title--thankyou {
+    display: flex;
+    justify-content: center;
 }
 
 .card__illustration img {
@@ -365,7 +397,7 @@ section {
     .card {
         padding: clamp(1.75rem, 3.5vw, 3rem);
         gap: clamp(1rem, 1.5vw, 1.5rem);
-        max-width: 28.5rem;
+        /* max-width: 28.5rem; */
         /* slightly larger on desktop */
     }
 
@@ -380,6 +412,12 @@ section {
     .card__rating-group {
         gap: clamp(0.75rem, 1.2vw, 1.25rem);
         justify-content: space-between;
+    }
+
+    .card__rating-btn {
+        width: clamp(3rem, 7vw, 3.5rem);
+        height: clamp(3rem, 7vw, 3.5rem);
+        font-size: clamp(1rem, 1.2vw, 1.125rem);
     }
 }
 
