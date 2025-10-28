@@ -22,6 +22,7 @@
 
     /* === New tone for subtle UI backgrounds === */
     --clr-grey-800: hsl(213, 19%, 23%);
+    --clr-border-light: rgba(255, 255, 255, 0.04);
 
     --radius: 1.5rem;
     --radius-sm: 1rem;
@@ -29,6 +30,17 @@
     --transition: 250ms ease;
     --focus-outline: 3px solid #005fcc;
     --focus-offset: 3px;
+
+
+
+    /* base fluid scale hints (optional tokens for reference) */
+    --type-scale-sm: clamp(0.875rem, 1vw + 0.2rem, 1rem);
+    /* ~14-16px */
+    --type-scale-md: clamp(1rem, 1.2vw + 0.4rem, 1.125rem);
+    /* ~16-18px */
+    --type-scale-lg: clamp(1.5rem, 2vw + 1rem, 2rem);
+    /* headings */
+
 }
 
 /* Box model & reset */
@@ -44,7 +56,7 @@
 
 
 html {
-    font-size: 100%;
+    font-size: clamp(100%, 1vw + 0.5rem, 112.5%);
     /* 16px base */
     scroll-behavior: smooth;
 }
@@ -63,13 +75,20 @@ body {
     justify-content: center;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 /* ========== 2. Accessibility utilities ========== */
 
 /* Screen-reader only utility (keeps content for AT) */
 .sr-only,
 .visually-hidden {
-    position: absolute !important;
-    width: 1px;
+    position: absolute;
+    width: 0.0625rem;
+    /* 1px / 16 = 0.0625rem */
     height: 1px;
     padding: 0;
     margin: -1px;
@@ -88,14 +107,14 @@ body {
     * {
         animation-duration: 0.001ms;
         transition-duration: 0.001ms;
-        animation-iteration-count: 1 !important;
+        animation-iteration-count: 1;
     }
 }
 
 /* Honor high contrast mode where supported */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
     * {
-        outline-style: auto !important;
+        outline-style: auto;
     }
 }
 
@@ -174,21 +193,12 @@ input {
 
 /* ========== 4. Typography (fluid with clamp) ========== */
 
-:root {
-    /* base fluid scale hints (optional tokens for reference) */
-    --type-scale-sm: clamp(0.875rem, 1vw + 0.2rem, 1rem);
-    /* ~14-16px */
-    --type-scale-md: clamp(1rem, 1.2vw + 0.4rem, 1.125rem);
-    /* ~16-18px */
-    --type-scale-lg: clamp(1.5rem, 2vw + 1rem, 2rem);
-    /* headings */
-}
 
 .card__title {
     font-size: var(--type-scale-lg);
     font-weight: 700;
     line-height: 1.2;
-    margin-bottom: 0.25rem;
+    margin-block-end: 0.25rem;
     text-align: left;
 }
 
@@ -224,7 +234,6 @@ input {
 .card__rating-btn {
     appearance: none;
     -webkit-appearance: none;
-    border: none;
     border-radius: 50%;
     display: inline-grid;
     place-items: center;
@@ -239,7 +248,7 @@ input {
     background-color: var(--clr-grey-800);
     /* ✅ defined in :root */
     color: var(--clr-grey-500);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--clr-border-light);
 
     /* Motion */
     transition:
@@ -431,11 +440,7 @@ section {
 /* ========== 10. Edge-case & utility rules ========== */
 
 /* Prevent images from causing overflow */
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
+
 
 /* Prevent horizontal scroll due to long words */
 html,
