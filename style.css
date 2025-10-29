@@ -23,6 +23,8 @@
     /* === New tone for subtle UI backgrounds === */
     --clr-grey-800: hsl(213, 19%, 23%);
     --clr-border-light: rgba(255, 255, 255, 0.04);
+    --focus-ring-color: rgba(0, 95, 204, 0.12);
+    --focus-ring-width: 4px;
 
     --radius: 1.5rem;
     --radius-sm: 1rem;
@@ -89,7 +91,8 @@ img {
     position: absolute;
     width: 0.0625rem;
     /* 1px / 16 = 0.0625rem */
-    height: 1px;
+    height: 0.0625rem;
+        /* 1px ÷ 16 = 0.0625rem */
     padding: 0;
     margin: -1px;
     overflow: hidden;
@@ -275,7 +278,7 @@ input {
 
 /* Provide visible focus ring for keyboard users */
 .card__rating-btn:focus-visible {
-    box-shadow: 0 0 0 4px rgba(0, 95, 204, 0.12);
+    box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
     outline: var(--focus-outline);
     outline-offset: var(--focus-offset);
 }
