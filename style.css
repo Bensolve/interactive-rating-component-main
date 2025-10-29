@@ -137,8 +137,9 @@ img {
 button,
 a,
 input {
-    min-width: 44px;
-    min-height: 44px;
+    min-width: 2.75rem; /* 44px ÷ 16 = 2.75rem */
+    min-height: 2.75rem; /* 44px ÷ 16 = 2.75rem */
+    /* min-height: 44px; */
     touch-action: manipulation;
 }
 
